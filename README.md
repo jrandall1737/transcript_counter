@@ -24,8 +24,8 @@ Before you begin, make sure you have:
 If using Git:
 
 ```bash
-git clone <your-repo-url>
-cd <project-folder>
+git clone https://github.com/jrandall1737/transcript_counter
+cd transcript_counter
 ```
 
 Or download and extract the ZIP file into a local directory.
@@ -70,11 +70,7 @@ pip list
 
 ## 4. Configure File Paths
 
-Open the notebook in Jupyter:
-
-```bash
-jupyter notebook
-```
+Open the notebook in VsCode with the jupyter plugin installed:
 
 Then open:
 
@@ -87,13 +83,6 @@ Inside the notebook, locate the code section labeled:
 Edit any file or directory paths in this section so they match the
 locations on your system.
 
-Example:
-
-```python
-input_dir = "C:/Users/yourname/data/transcripts"
-output_file = "C:/Users/yourname/output/results.csv"
-```
-
 Make sure all referenced paths exist and are accessible.
 
 ---
@@ -102,25 +91,11 @@ Make sure all referenced paths exist and are accessible.
 
 Once dependencies are installed and file paths are configured:
 
-1.  In Jupyter, open `transcript_counter.ipynb`
-2.  Select **Kernel → Restart & Run All**,\
+1.  In VsCode, open `transcript_counter.ipynb`
+2.  Select **Run All**,\
     or run each cell manually from top to bottom
 
 The notebook will process the transcripts and generate the output files.
-
----
-
-## 6. Output
-
-After successful execution:
-
-- Results will be saved to the location specified in the **Setup file
-  paths** section
-- Any logs or summaries will appear in the notebook output cells
-
-Check the configured output directory for generated files.
-
----
 
 ## Troubleshooting
 
