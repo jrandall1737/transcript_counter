@@ -37,3 +37,8 @@ env/
 
 output*
 2025*
+
+# project specific
+figures
+output
+old
