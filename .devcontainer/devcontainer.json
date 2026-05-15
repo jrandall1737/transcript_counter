@@ -1,0 +1,8 @@
+{
+  "name": "Baysor",
+  "image": "vpetukhov/baysor:v0.5.0",
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/data,type=bind"
+  ],
+  "workspaceFolder": "/data"
+}
