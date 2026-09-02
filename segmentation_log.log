@@ -1,0 +1,20 @@
+[21:10:22] Info: (2026-05-15) Run Baysor v0.5.0
+[21:10:22] Info: Loading data...
+[21:10:37] Info: Loaded 3928807 transcripts
+[21:10:39] Error: ErrorException("The prior segmentation column 'cell_id' must be of integer type")
+|                 
+|                 error(s::String) at error.jl:33
+|                 parse_prior_assignment(df_spatial::DataFrames.DataFrame, args::Dict{String, Any}) at main.jl:253
+|                 load_prior_segmentation(df_spatial::DataFrames.DataFrame, args::Dict{String, Any}) at main.jl:273
+|                 load_and_preprocess_data!(args::Dict{String, Any}) at main.jl:330
+|                 run_cli_main(args::Vector{String}) at main.jl:433
+|                 run_cli(args::Vector{String}) at common.jl:118
+|                 run_cli() at common.jl:103
+|                 top-level scope at baysor:4
+|                 eval at boot.jl:360 [inlined]
+|                 include_string(mapexpr::typeof(identity), mod::Module, code::String, filename::String) at loading.jl:1094
+|                 _include(mapexpr::Function, mod::Module, _path::String) at loading.jl:1148
+|                 include(mod::Module, _path::String) at Base.jl:386
+|                 exec_options(opts::Base.JLOptions) at client.jl:285
+|                 _start() at client.jl:485
+└ Baysor /root/.julia/packages/Baysor/RVP5y/src/cli/common.jl:132
