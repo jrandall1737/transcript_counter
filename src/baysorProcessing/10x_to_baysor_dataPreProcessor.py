@@ -10,6 +10,7 @@ def main():
     # Parse input arguments.
     args = parse_args()
 
+
     data_frame = pd.read_parquet(args.transcript)
 
     # Filter transcripts. Ignore negative controls
@@ -38,14 +39,14 @@ def main():
 
 def parse_args():
     """Parses command-line options for main()."""
-    summary = 'Filter transcripts from transcripts.csv based on Q-Score threshold \
-               and upper bounds on x and y coordinates. Remove negative controls.'
+    summary = 'Filter transcripts from transcripts.parquet based on Q-Score threshold \
+               and upper bounds on x and y coordinates. Remove negative controls. Output transcripts to CSV file.'
 
     parser = argparse.ArgumentParser(description=summary)
     requiredNamed = parser.add_argument_group('required named arguments')
     requiredNamed.add_argument('-transcript',
                                required = True,
-                               help="The path to the transcripts.csv file produced " +
+                               help="The path to the transcripts.parquet file produced " +
                                     "by Xenium.")
     parser.add_argument('-min_qv',
                         default='20.0',
