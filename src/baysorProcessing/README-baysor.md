@@ -132,6 +132,65 @@ Written to `emmaOutput/EmmaRegion1Left/`:
 
 ---
 
+## Batch — every ROI in a workbook
+
+`run_pipeline_batch.py` loops the whole subset → Baysor → per-cell-counts flow
+over every tab of an Excel workbook of ROI selections (e.g.
+`emmaInputData/Modified 10x Pilot -A11 ROI Coordinates.xlsx`, 22 tabs).
+
+**Workbook format** — each worksheet must be a raw Xenium Explorer *export
+selection coordinates* dump pasted into column A (an optional label row, a blank
+row, then the `#Selection names:` / `#Areas` / `Selection,X,Y,Class,Color` /
+`Selection N,<x>,<y>,…` lines). The sheet name must contain `Region <N>`
+(`Region 1A Left`, `Region 2D R`, …) so it can be matched to a
+`…__Region-<N>__…` output folder under `--data-root`. Parsing is stdlib-only —
+no `openpyxl` needed.
+
+```powershell
+# list what would run — resolves every sheet -> region folder, does no work
+.venv\Scripts\python.exe src\baysorProcessing\run_pipeline_batch.py --dry-run
+
+# one sheet
+.venv\Scripts\python.exe src\baysorProcessing\run_pipeline_batch.py --sheets "Region 1A Left"
+
+# everything (resumable); ~3-5 min per ROI, ~1.5 h for 22
+.venv\Scripts\python.exe src\baysorProcessing\run_pipeline_batch.py --skip-existing
+```
+
+| flag | effect |
+|------|--------|
+| `--xlsx` | workbook (default: the A11 ROI file) |
+| `--data-root` | folder holding the `output-XETG…__Region-*` dirs |
+| `--out-root` | where per-sheet folders go (default: `emmaOutput`) |
+| `--sheets "A,B"` | run only these tabs |
+| `--skip-existing` | skip a tab whose `baysor_cell_counts.csv` already exists |
+| `--raw-prior` | feed 10x's string `cell_id` straight to Baysor instead of remapping it to an integer `0 = unassigned` prior (Baysor then logs *"No unassigned molecules found…"*) |
+| `--dry-run` | print the plan and exit |
+
+Each tab writes `emmaOutput/<Safe_Sheet_Name>/` with `*_selection.csv`,
+`xenium_subset.parquet`, `legacy_baysor_transcripts.csv`, `baysor-output_*`
+(segmentation / stats / polygons / plots / log), `baysor_run.log`, and
+`*_cell_counts.csv` (+ `.cell_summary.csv`) for **both** the 10x and the Baysor
+segmentation.
+
+After the loop it writes `emmaOutput/<workbook stem>_run_summary.csv`, one row
+per tab: region, `n_vertices`, `status`/`error`, `n_subset_transcripts`
+(all molecules in the polygon), `n_legacy_transcripts` (after qv≥20 + control
+drop, i.e. what Baysor saw), cell counts and assigned-fraction for each
+segmentation, `baysor_prior_warning`, and `seconds`. A failed tab is recorded
+and the loop continues.
+
+Single-ROI equivalent (what the loop calls per sheet):
+
+```powershell
+.venv\Scripts\python.exe src\baysorProcessing\run_pipeline_comparison.py `
+  --region-dir "20250827__205437__CSU_Bouchet_v1_2025-08-27\output-XETG00230__0063687__Region-1A__20250827__205535" `
+  --selection emmaInputData\EmmaRegion1LeftSelection.csv `
+  --out-dir emmaOutput\Region_1A_Left
+```
+
+---
+
 ## This run's result
 
 - Input: 109,816 transcripts, 50 genes, prior segmentation 987 cells.
